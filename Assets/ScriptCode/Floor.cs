@@ -16,11 +16,5 @@ public class Floor : MonoBehaviour {
 		
 	}
 
-    void OnCollisionEnter(Collision col)
-    {
-        if(col.gameObject.tag == "MelPlayer")
-        {
-            gameObject.SetActive(false);
-        }
-    }
+    
 }

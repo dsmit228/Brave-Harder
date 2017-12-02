@@ -6,47 +6,40 @@ using UnityEngine.SceneManagement;
 
 public class MelMovement : MonoBehaviour {
 
-    public float speed = 1;
-    public int score = 0;
-    public GameObject gameOver;
-    public Text userScore;
+    public float moveSpeed = 1;
+    private float movement = 0;
+    private Rigidbody2D rigidBody;
+    public float maxSpeed = 20;
+
 
 	// Use this for initialization
 	void Start () {
-		
+        rigidBody = GetComponent<Rigidbody2D>();
 	}
 	
 	// Update is called once per frame
-	void Update () {
-        //Movement up
-		if (Input.GetKey(KeyCode.UpArrow)&&(transform.position.y<2.20))
-        {
-            transform.position += Vector3.up * speed * Time.deltaTime;
-        }
+	void FixedUpdate () {
 
-        //Movement down
-        if (Input.GetKey(KeyCode.DownArrow) && (transform.position.y > -2.20))
-        {
-            transform.position += Vector3.down * speed * Time.deltaTime;
-        }
-
+        movement = Input.GetAxis("Horizontal");
         //Right movement
-        if (Input.GetKey(KeyCode.RightArrow) && (transform.position.x < 2.20))
+        if (Input.GetKey(KeyCode.RightArrow) && movement < maxSpeed)
         {
-            transform.position += Vector3.right * speed * Time.deltaTime;
+            rigidBody.AddForce(moveSpeed * movement * Vector2.right, ForceMode2D.Impulse);
         }
 
         //Left movement
-        if (Input.GetKey(KeyCode.LeftArrow) && (transform.position.x > -2.20))
+        if (Input.GetKey(KeyCode.LeftArrow) && movement < maxSpeed)
         {
-            transform.position += Vector3.left * speed * Time.deltaTime;
+            rigidBody.AddForce(moveSpeed * -movement * Vector2.left, ForceMode2D.Impulse);
         }
-
+        
+        
 	}
 
-    void OnCollisionEnter(Collision col)
+
+    void OnCollisionEnter2D(Collision2D col)
     {
-        if (col.gameObject.tag == "FloorTest")
+        if (col.gameObject.tag == "FloorObject")
         {
             gameObject.SetActive(false);
         }
